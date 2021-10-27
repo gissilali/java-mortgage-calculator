@@ -21,6 +21,7 @@ public class MortgageController {
         int downPayment = scanner.nextInt();
         System.out.println("How much does the home cost?");
         int costOfHome = scanner.nextInt();
+
         System.out.println("How much does the home cost?");
     }
 
