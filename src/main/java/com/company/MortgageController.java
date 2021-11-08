@@ -9,6 +9,7 @@ public class MortgageController {
     int downPayment;
     int costOfHome;
 
+
     public void runQuestionnaire() throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello what's your name?");
@@ -21,13 +22,34 @@ public class MortgageController {
         int downPayment = scanner.nextInt();
         System.out.println("How much does the home cost?");
         int costOfHome = scanner.nextInt();
-
         System.out.println("How much does the home cost?");
+
+        this.downPayment = downPayment;
+        this.costOfHome = costOfHome;
+        this.lengthOfLoan = lengthOfLoan;
+        this.name = name;
+
+        MortgageData mortgageData = this.calculate();
+
+        System.out.println("Monthly payments is: - " + mortgageData.getMonthlyPayments());
     }
 
     public MortgageData calculate() {
-        int principal = this.costOfHome - this.downPayment;
-        double monthlyInterest = principal * Math.pow(5 * (1 + 5), this.lengthOfLoan) / (Math.pow(1 + 5, this.lengthOfLoan) - 1);
-        return new MortgageData("Silali", (float) monthlyInterest, 20, 45);
+        float percentageRate = 5;
+        float rate = (percentageRate / 100) / 12;
+        int principal = this.getPrincipal();
+        int months = this.getLengthOfLoanInMonths();
+        double monthlyPayment = ((int)(principal * rate) * (Math.pow((1 + rate), months)))/((Math.pow(1+rate, months)) - 1);
+        double totalPayment = monthlyPayment * (months);
+        double totalInterest = totalPayment - principal;
+        return new MortgageData(monthlyPayment, totalPayment, totalInterest);
+    }
+
+    int getLengthOfLoanInMonths() {
+        return this.lengthOfLoan * 12;
+    }
+
+    int getPrincipal() {
+        return this.costOfHome - this.downPayment;
     }
 }
